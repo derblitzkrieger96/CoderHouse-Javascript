@@ -31,6 +31,17 @@ main {
   color: white;
 }
 
+@media (max-width: 529px) {
+  .card-header {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+.card-header-GL {
+  margin: 0 10px;
+}
+
 .card-body {
   display: flex;
   flex-direction: column;

@@ -1,3 +1,21 @@
+//prueba
+// Function to parse query parameters from the URL
+function getQueryParams() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const params = {};
+  for (const [key, value] of queryParams.entries()) {
+    params[key] = value;
+  }
+  return params;
+}
+
+// Get the query parameters and display the form data
+const queryParams = getQueryParams();
+const { questions, ...newObj } = JSON.parse(Object.keys(queryParams)[0]);
+let formInfo = newObj;
+let currentLevelInfo = { questions };
+console.log("data", typeof queryParams, { questions });
+
 // Javascript Variables
 let currentGermanLevel = "";
 let selectedOptions = {};
@@ -27,7 +45,7 @@ buttonPreviousHTML.classList.add("hidden");
 // functions
 
 const setGeneralHTMLValues = function (infoObj) {
-  currentGermanLevelHTML.textContent = infoObj.currentGermanLevel;
+  currentGermanLevelHTML.textContent = infoObj.currentGermanLevel + " ";
 };
 
 function optionClickListener(e) {
@@ -121,8 +139,12 @@ updateQuestion.addEventListener("click", function (e) {
   });
 });
 
-let formInfo = JSON.parse(localStorage.getItem("formInfo"));
-let currentLevelInfo = JSON.parse(localStorage.getItem("currentLevelInfo"));
+// let formInfo = JSON.parse(localStorage.getItem("formInfo"));
+// // let currentLevelInfo = JSON.parse(localStorage.getItem("currentLevelInfo"));
+// let currentLevelInfo = {
+//   questions: JSON.parse(Object.keys(queryParams)[0]).questions,
+// };
+console.log("formInfo", formInfo);
 
 initializeGeneralVariables(formInfo);
 setQuestionVariables(currentLevelInfo, currentQuestionIndex);

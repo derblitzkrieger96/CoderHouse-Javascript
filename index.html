@@ -10,18 +10,19 @@
     <main class="main-index">
       <div class="card">
         <div class="card-header">GermanLab Quiz</div>
-        <form class="card-body" id="card-body" action="./pages/quizForm.html">
+        <form class="card-body" id="card-body" method="get">
+          <!-- <form class="card-body" id="card-body" action="./pages/quizForm.html"> -->
           <div class="card-body-input">
             <label class="card-body-input-name-label" for="name">
               <input
                 type="text"
-                name=""
+                name="name"
                 id="name"
                 placeholder="Enter your name"
               />
             </label>
             <label for="level">
-              <select name="" id="level">
+              <select name="level" id="level">
                 <option value="">Select a Germal level</option>
                 <option value="A1">A1</option>
                 <option value="A2">A2</option>
@@ -31,7 +32,7 @@
             </label>
           </div>
           <label class="remember-me" for="remember-me">
-            <input type="checkbox" name="" id="remember-me" />
+            <input type="checkbox" name="remember" id="remember-me" />
             Remember me
           </label>
           <input class="card-body-button" type="submit" value="Start quiz" />

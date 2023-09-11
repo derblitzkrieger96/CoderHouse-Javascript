@@ -23,15 +23,40 @@ const loadData = async (levelInput) => {
     })
   );
   localStorage.setItem("currentLevelInfo", JSON.stringify(globaLevelObj));
+  return {
+    levelInput,
+    nameInput,
+    rememberMeInput,
+    ...globaLevelObj,
+  };
+  //prueba
 
-  console.log(globaLevelObj);
+  //   console.log(globaLevelObj);
 };
 
 form.addEventListener("submit", function (e) {
-  //   e.preventDefault(); // Prevent the form from submitting normally
+  e.preventDefault(); // Prevent the form from submitting normally
   nameInput = document.querySelector("#name").value;
   levelInput = document.querySelector("#level").value;
   rememberMeInput = document.querySelector("#remember-me").checked;
 
-  loadData(levelInput);
+  //   prueba
+  const formData = new FormData(form);
+  let queryParams = "";
+  queryParams = new URLSearchParams(formData).toString();
+  //   while (queryParams === "") {
+  //     console.log("waiting");
+  //   }
+  const dataToSend = loadData(levelInput)
+    .then((data) => {
+      let encodedURL = encodeURIComponent(JSON.stringify(data));
+      console.log("data", encodedURL);
+      console.log("url", `../pages/quizForm.html?${encodedURL}`);
+      window.location.href = `../pages/quizForm.html?${encodedURL}`;
+    })
+    .toString();
+
+  // Redirect to the second page with query parameters
+  //   window.location.href = `../pages/quizForm.html?${queryParams}`;
+  //   window.location.href = `../pages/quizForm.html?${dataToSend}`;
 });
