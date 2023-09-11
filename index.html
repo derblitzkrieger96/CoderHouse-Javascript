@@ -3,9 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
     <title>Document</title>
   </head>
   <body>
-    <script src="./preEntrega1.js"></script>
+    <main class="main-index">
+      <div class="card">
+        <div class="card-header">GermanLab Quiz</div>
+        <form class="card-body" id="card-body" action="./pages/quizForm.html">
+          <div class="card-body-input">
+            <label class="card-body-input-name-label" for="name">
+              <input
+                type="text"
+                name=""
+                id="name"
+                placeholder="Enter your name"
+              />
+            </label>
+            <label for="level">
+              <select name="" id="level">
+                <option value="">Select a Germal level</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="B1">B1</option>
+                <option value="B2">B2</option>
+              </select>
+            </label>
+          </div>
+          <label class="remember-me" for="remember-me">
+            <input type="checkbox" name="" id="remember-me" />
+            Remember me
+          </label>
+          <input class="card-body-button" type="submit" value="Start quiz" />
+        </form>
+      </div>
+    </main>
+    <!-- <script src="./preEntrega1.js"></script> -->
+    <script src="./scripts/script1.js"></script>
   </body>
 </html>
