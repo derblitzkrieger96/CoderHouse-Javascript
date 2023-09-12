@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Define the character encoding and viewport settings -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Link to an external CSS stylesheet for styling -->
     <link rel="stylesheet" href="./css/styles.css" />
+
+    <!-- Set the title of the webpage -->
     <title>Document</title>
   </head>
   <body>
     <main class="main-index">
       <div class="card">
+        <!-- Header of the card -->
         <div class="card-header">GermanLab Quiz</div>
+
+        <!-- A form for user input -->
         <form class="card-body" id="card-body" method="get">
           <!-- <form class="card-body" id="card-body" action="./pages/quizForm.html"> -->
           <div class="card-body-input">
+            <!-- Input fields for user's name -->
             <label class="card-body-input-name-label" for="name">
               <input
                 type="text"
@@ -21,6 +30,8 @@
                 placeholder="Enter your name"
               />
             </label>
+
+            <!-- Dropdown menu for selecting a German language level -->
             <label for="level">
               <select name="level" id="level">
                 <option value="">Select a Germal level</option>
@@ -31,15 +42,20 @@
               </select>
             </label>
           </div>
+
+          <!-- Checkbox for "Remember me" option -->
           <label class="remember-me" for="remember-me">
             <input type="checkbox" name="remember" id="remember-me" />
             Remember me
           </label>
+
+          <!-- Button for submitting the form -->
           <input class="card-body-button" type="submit" value="Start quiz" />
         </form>
       </div>
     </main>
-    <!-- <script src="./preEntrega1.js"></script> -->
+
+    <!-- Include an external JavaScript file for scripting -->
     <script src="./scripts/script1.js"></script>
   </body>
 </html>

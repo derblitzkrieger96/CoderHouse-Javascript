@@ -1,53 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Define the character encoding and viewport settings -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Link to an external CSS stylesheet for styling -->
     <link rel="stylesheet" href="../css/styles.css" />
+
+    <!-- Set the title of the webpage -->
     <title>Question</title>
   </head>
-  <body>
+  <body class="body">
     <main class="question">
       <div class="card">
+        <!-- Header of the card -->
         <div class="card-header">
+          <!-- Static text "GermanLab Quiz: " -->
           <span>GermanLab Quiz: </span>
+          <!-- Dynamic German level (e.g., "B2") -->
           <span> <span class="card-header-GL">B2</span>level </span>
         </div>
+
+        <!-- Progress bar for tracking quiz progress -->
         <div class="card-progress-bar"></div>
+
+        <!-- Information section -->
         <div class="card-info">
+          <!-- Display current question number and total questions -->
           <div class="card-info-question">
             Question&nbsp;<span class="card-info-question-curr-q"></span> /<span
               class="card-info-question-tot-q"
             ></span>
           </div>
+
+          <!-- Display remaining time -->
           <div class="card-info-timeleft">Time left: 5:49</div>
         </div>
+
+        <!-- Question section -->
         <div class="card-question">
+          <!-- Display the statement of the current question -->
           <h2 class="card-question-statement">1. Question 1</h2>
+
+          <!-- Options for the current question -->
           <div class="card-question-options-box">
+            <!-- Option A -->
             <div class="card-question-single-option">
               <div class="card-question-single-option-letter">A</div>
               <div class="card-question-single-option-option">option 1</div>
             </div>
+
+            <!-- Option B -->
             <div class="card-question-single-option">
               <div class="card-question-single-option-letter">B</div>
               <div class="card-question-single-option-option">option 2</div>
             </div>
           </div>
         </div>
+
+        <!-- Options buttons for navigation -->
         <div class="card-options">
+          <!-- Button for moving to the previous question -->
           <button class="card-options-button previous">Previous</button>
+
+          <!-- Button for moving to the next question -->
           <button class="card-options-button next">Next</button>
         </div>
       </div>
     </main>
-    <!-- <script>
-      // JavaScript code to extract and display data from the URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const data = urlParams.get("data");
-      console.log(data);
-      // document.getElementById('displayData').textContent = data;
-    </script> -->
+    <div class="modal-parent">
+      <div class="modal">
+        <div class="modal-icon-score">
+          <img src="../images/high-score.png" alt="" />
+        </div>
+        <div class="modal-info-results">
+          <div class="feedback-message">Mensaje de feedback</div>
+          <div>Your Score</div>
+          <div class="score">80</div>
+        </div>
+        <div class="modal-options">
+          <button class="modal-close-button">Close</button>
+        </div>
+      </div>
+    </div>
+    <!-- Include an external JavaScript file for scripting, with "defer" attribute for deferred loading -->
     <script src="../scripts/script2.js" defer></script>
   </body>
 </html>

@@ -193,3 +193,70 @@ main {
 
   /* color: white; */
 }
+
+/* ------------------------------------------------------------ */
+/* MODAL WINDOW */
+
+/* .body .question {
+  backdrop-filter: blur(10px);
+  z-index: 999;
+} */
+.modal-parent {
+  position: fixed;
+  left: 0;
+  top: 0;
+  backdrop-filter: blur(30px) brightness(40%);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+.modal {
+  width: 20rem;
+  height: auto;
+  border-radius: 9px;
+  padding: 1rem;
+  backdrop-filter: blur(30px) opacity(90%);
+  background-color: white;
+}
+
+.modal-icon-score {
+  height: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-icon-score img {
+  width: 33%;
+}
+
+.modal-info-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em;
+  margin-top: 0;
+}
+.modal-info-results .feedback-message {
+  margin: 1.5rem;
+}
+.modal-info-results .score {
+  font-size: 3rem;
+}
+
+.modal .modal-options {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal .modal-options .modal-close-button {
+  width: 5rem;
+  height: 2rem;
+  background-color: #ff0a54;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
