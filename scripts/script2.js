@@ -17,9 +17,14 @@ const { questions, ...newObj } = JSON.parse(Object.keys(queryParams)[0]);
 let formInfo = newObj;
 let currentLevelInfo = { questions };
 console.log("data", typeof queryParams, { questions });
+let right_answers = Object.keys(currentLevelInfo.questions).map(
+  (key) => currentLevelInfo.questions[key]["right_answer"]
+);
+console.log("right_answers", right_answers);
 
 // Javascript Variables
 let currentGermanLevel = ""; // Stores the current German language level
+let currentNameUser = ""; // Stores the current name user
 let selectedOptions = {}; // Stores the selected options for questions
 
 // question variables
@@ -171,7 +176,63 @@ const setQuestionVariables = function (currentLevelInfo, currentQuestionIndex) {
  */
 const initializeGeneralVariables = function (formInfo) {
   currentGermanLevel = formInfo.levelInput;
+  currentNameUser = formInfo.nameInput;
 };
+
+function check_answers(right_answers, user_answers) {
+  let right_answer_count = 0;
+  let i = 0;
+  console.log(right_answers.length);
+
+  // Loop through each question's right answer and user's answer
+  while (i < right_answers.length) {
+    // If the user's answer is among the right answers, increase the count
+    if (right_answers.includes(user_answers[i])) {
+      right_answer_count++;
+      console.log(right_answer_count);
+    }
+    i++;
+  }
+  console.log(right_answer_count, right_answers);
+
+  // Calculate the score and percentage of correct answers
+  return {
+    score: (right_answer_count / right_answers.length) * 100,
+    percentage: `(${right_answer_count}/${right_answers.length})`,
+  };
+}
+function get_final_message(score, level) {
+  let message = "";
+  let emoji = "";
+  let urlIcon = "";
+
+  // Determine the message and emoji based on the user's score
+  if (score == 100) {
+    message = `Congratulations! Perfect score! You have mastered the ${level} level of German!`;
+    emoji = "🎉🏆👏";
+    urlIcon = "../images/high-score.png";
+  } else if (score < 100 && score >= 75) {
+    message = `Good job! You're making steady progress!`;
+    emoji = "👍😊";
+    urlIcon = "../images/medium-score.png";
+  } else if (score < 75 && score >= 50) {
+    message = `Don't give up! With more practice, you'll do even better!`;
+    emoji = "💪🌟";
+    urlIcon = "../images/acceptable-score.png";
+  } else if (score < 50 && score >= 25) {
+    message = `Remember, every mistake is an opportunity to learn. Keep going!`;
+    emoji = "🤔🚀";
+    urlIcon = "../images/low-score.png";
+  } else {
+    message = `You're just beginning. Keep learning and your score will improve!`;
+    emoji = "😢📚";
+    urlIcon = "../images/zero-score.png";
+  }
+
+  // Construct the final message
+  const final_message2 = { final_message: `${message} ${emoji}`, urlIcon };
+  return final_message2;
+}
 
 /**
  * Event listener for updating questions and controlling quiz navigation.
@@ -185,7 +246,28 @@ const initializeGeneralVariables = function (formInfo) {
 updateQuestion.addEventListener("click", function (e) {
   if (e.target.innerHTML === "Finish") {
     const modal = document.querySelector(".modal-parent");
+    const final_messageHTML = modal.querySelector(".feedback-message");
+    const scoreHTML = modal.querySelector(".score");
+    const userNameHTML = modal.querySelector(".modal-user-name");
+    const percentageHTML = modal.querySelector(".percentage");
+    const iconImgHTML = modal.querySelector(".modal-icon-score-img");
+
     modal.style.visibility = "visible";
+    let { score, percentage } = check_answers(
+      right_answers,
+      Object.values(selectedOptions)
+    );
+
+    // Display the final message with the user's score and feedback
+    const { final_message, urlIcon } = get_final_message(
+      score,
+      currentGermanLevel
+    );
+    final_messageHTML.textContent = final_message;
+    scoreHTML.textContent = `${score}%`;
+    userNameHTML.textContent = formInfo.nameInput;
+    percentageHTML.textContent = percentage;
+    iconImgHTML.src = urlIcon;
 
     modal.addEventListener("click", function (e) {
       if (
