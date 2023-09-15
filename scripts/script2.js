@@ -25,7 +25,8 @@ console.log("right_answers", right_answers);
 // Javascript Variables
 let currentGermanLevel = ""; // Stores the current German language level
 let currentNameUser = ""; // Stores the current name user
-let selectedOptions = {}; // Stores the selected options for questions
+let selectedOptions = {};
+let quizIsSubmitted = false; // Stores the selected options for questions
 
 // question variables
 let currentQuestionIndex = 1; // Stores the index of the current question
@@ -234,6 +235,8 @@ function get_final_message(score, level) {
   return final_message2;
 }
 
+const revealAnswers = function () {};
+
 /**
  * Event listener for updating questions and controlling quiz navigation.
  *
@@ -244,14 +247,39 @@ function get_final_message(score, level) {
  * @param {Event} e - The click event object.
  */
 updateQuestion.addEventListener("click", function (e) {
+  if (e.target.innerHTML === "Try it again") {
+    window.location.href = "../index.html";
+  }
   if (e.target.innerHTML === "Finish") {
+    quizIsSubmitted = true;
     const modal = document.querySelector(".modal-parent");
     const final_messageHTML = modal.querySelector(".feedback-message");
     const scoreHTML = modal.querySelector(".score");
     const userNameHTML = modal.querySelector(".modal-user-name");
     const percentageHTML = modal.querySelector(".percentage");
     const iconImgHTML = modal.querySelector(".modal-icon-score-img");
-
+    const allOptions = document.querySelectorAll(
+      ".card-question-single-option-option"
+    );
+    const test11 = document.querySelector(
+      ".card-question-single-option-option"
+    );
+    test11.style.backgroundColor = "green";
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    [...allOptions].forEach((option) => {
+      console.log(
+        option,
+        option.innerHTML,
+        right_answers[currentQuestionIndex - 1]
+      );
+      if (option.innerHTML === right_answers[currentQuestionIndex - 1]) {
+        option.style.backgroundColor = "green";
+        option.innerHTML = "green";
+        option.classList.add("selected");
+        console.log("style", option.style.backgroundColor);
+      }
+    });
+    currentGermanLevelHTML.innerHTML = "ALV";
     modal.style.visibility = "visible";
     let { score, percentage } = check_answers(
       right_answers,
@@ -294,7 +322,9 @@ updateQuestion.addEventListener("click", function (e) {
 
   // Update the "Next" button label and make it "Finish" if at the last question
   if (currentQuestionIndex === totalQuestionNumber) {
+    console.log("quizIsSubmitted", quizIsSubmitted);
     buttonNextHTML.textContent = "Finish";
+    if (quizIsSubmitted) buttonNextHTML.textContent = "Try it again";
   }
 
   // Hide the "Previous" button at the first question
