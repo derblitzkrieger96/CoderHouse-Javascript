@@ -44,6 +44,9 @@ main {
     flex-direction: column;
     height: auto;
   }
+  .card-options {
+    gap: 1rem;
+  }
 }
 
 .card-header-GL {
@@ -123,7 +126,52 @@ main {
 
 .question .card-progress-bar {
   height: 10px;
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+}
+
+.question .card-progress-bar .progress-unit-parent {
+  width: 100%;
+}
+.question .card-progress-bar .progress-unit {
+  width: 100%;
+  height: 100%;
+  /* transition: all 0.5s ease-in-out; */
+}
+
+.active {
   background-color: #1e6091;
+  animation-name: progressBar;
+  animation-iteration-count: 1;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes progressBar {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+.deactive {
+  background-color: #1e6091;
+  animation-name: progressBar2;
+  animation-iteration-count: 1;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes progressBar2 {
+  0% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
 }
 
 .question .card-info {

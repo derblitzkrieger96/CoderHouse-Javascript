@@ -48,11 +48,48 @@ let totalQuestionNumberHTML = document.querySelector(
 let buttonNextHTML = document.querySelector(".next");
 let buttonPreviousHTML = document.querySelector(".previous");
 let updateQuestion = document.querySelector(".card-options");
+let progressBarItems = document.querySelectorAll(".progress-unit-parent");
+let countdownElement = document.querySelector(".card-info-timeleft");
 
 buttonPreviousHTML.classList.add("hidden");
 
 //----------------------------------------------------------------------------------
 // functions
+
+// Function to start the countdown
+function startCountdown(durationInSeconds) {
+  var remainingTime = durationInSeconds;
+
+  // Update the countdown every second
+  var countdownInterval = setInterval(function () {
+    if (remainingTime <= 0) {
+      clearInterval(countdownInterval); // Stop the countdown when it reaches 0
+      countdownElement.innerHTML = "Time's up!";
+    } else if (quizIsSubmitted) {
+      clearInterval(countdownInterval); // Stop the countdown when it reaches 0
+      countdownElement.innerHTML = "Time left: 00:00";
+    } else {
+      countdownElement.innerHTML = "Time left: " + formatTime(remainingTime);
+      remainingTime--;
+    }
+  }, 1000); // Update every 1 second
+}
+
+// Function to format the time as "MM:SS"
+function formatTime(seconds) {
+  var minutes = Math.floor(seconds / 60);
+  var remainingSeconds = seconds % 60;
+  return (
+    (minutes < 10 ? "0" : "") +
+    minutes +
+    ":" +
+    (remainingSeconds < 10 ? "0" : "") +
+    remainingSeconds
+  );
+}
+
+// Start the countdown with a duration of 60 seconds (adjust as needed)
+startCountdown(60);
 
 // Function to set general HTML values
 /**
@@ -251,6 +288,8 @@ updateQuestion.addEventListener("click", function (e) {
     window.location.href = "../index.html";
   }
   if (e.target.innerHTML === "Finish") {
+    buttonPreviousHTML.style.visibility = "hidden";
+    document.querySelector(".card-question").style.visibility = "hidden";
     quizIsSubmitted = true;
     const modal = document.querySelector(".modal-parent");
     const final_messageHTML = modal.querySelector(".feedback-message");
@@ -265,7 +304,6 @@ updateQuestion.addEventListener("click", function (e) {
       ".card-question-single-option-option"
     );
     test11.style.backgroundColor = "green";
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     [...allOptions].forEach((option) => {
       console.log(
         option,
@@ -279,7 +317,7 @@ updateQuestion.addEventListener("click", function (e) {
         console.log("style", option.style.backgroundColor);
       }
     });
-    currentGermanLevelHTML.innerHTML = "ALV";
+    // currentGermanLevelHTML.innerHTML = "ALV";
     modal.style.visibility = "visible";
     let { score, percentage } = check_answers(
       right_answers,
@@ -306,17 +344,33 @@ updateQuestion.addEventListener("click", function (e) {
       }
     });
   }
+
   // Check if the "Next" button was clicked and there are more questions
   if (
     e.target.innerHTML === "Next" &&
     currentQuestionIndex < totalQuestionNumber
   ) {
     currentQuestionIndex++;
+
+    progressBarItems.forEach(function (fill, index) {
+      if (index === currentQuestionIndex - 1) {
+        let childDiv = fill.querySelector(".progress-unit");
+        childDiv.classList.remove("deactive");
+        childDiv.classList.add("active");
+      }
+    });
   }
 
   // Check if the "Previous" button was clicked and not at the first question
   if (e.target.innerHTML === "Previous" && currentQuestionIndex > 1) {
     currentQuestionIndex--;
+    progressBarItems.forEach(function (fill, index) {
+      if (index === currentQuestionIndex) {
+        let childDiv = fill.querySelector(".progress-unit");
+        childDiv.classList.remove("active");
+        childDiv.classList.add("deactive");
+      }
+    });
   }
   buttonNextHTML.textContent = "Next";
 
@@ -324,7 +378,9 @@ updateQuestion.addEventListener("click", function (e) {
   if (currentQuestionIndex === totalQuestionNumber) {
     console.log("quizIsSubmitted", quizIsSubmitted);
     buttonNextHTML.textContent = "Finish";
-    if (quizIsSubmitted) buttonNextHTML.textContent = "Try it again";
+    if (quizIsSubmitted) {
+      buttonNextHTML.textContent = "Try it again";
+    }
   }
 
   // Hide the "Previous" button at the first question
