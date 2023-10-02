@@ -16,11 +16,9 @@ const queryParams = getQueryParams();
 const { questions, ...newObj } = JSON.parse(Object.keys(queryParams)[0]);
 let formInfo = newObj;
 let currentLevelInfo = { questions };
-console.log("data", typeof queryParams, { questions });
 let right_answers = Object.keys(currentLevelInfo.questions).map(
   (key) => currentLevelInfo.questions[key]["right_answer"]
 );
-console.log("right_answers", right_answers);
 
 // Javascript Variables
 let currentGermanLevel = ""; // Stores the current German language level
@@ -50,10 +48,67 @@ let buttonPreviousHTML = document.querySelector(".previous");
 let updateQuestion = document.querySelector(".card-options");
 let progressBarItems = document.querySelectorAll(".progress-unit-parent");
 let countdownElement = document.querySelector(".card-info-timeleft");
+let cardQuestion = document.querySelector(".card-question");
+
+//-----------------------------------------------------------------------------
+// modal window
+const modal = document.querySelector(".modal-parent");
+const final_messageHTML = modal.querySelector(".feedback-message");
+const scoreHTML = modal.querySelector(".score");
+const userNameHTML = modal.querySelector(".modal-user-name");
+const percentageHTML = modal.querySelector(".percentage");
+const iconImgHTML = modal.querySelector(".modal-icon-score-img");
+const allOptions = document.querySelectorAll(
+  ".card-question-single-option-option"
+);
+const test11 = document.querySelector(".card-question-single-option-option");
 
 buttonPreviousHTML.classList.add("hidden");
 
 //----------------------------------------------------------------------------------
+
+const finish = () => {
+  buttonPreviousHTML.style.visibility = "hidden";
+  cardQuestion.style.visibility = "hidden";
+  modal.style.visibility = "visible";
+  buttonPreviousHTML.style.visibility = "hidden";
+  quizIsSubmitted = true;
+
+  test11.style.backgroundColor = "green";
+  [...allOptions].forEach((option) => {
+    if (option.innerHTML === right_answers[currentQuestionIndex - 1]) {
+      option.style.backgroundColor = "green";
+      option.innerHTML = "green";
+      option.classList.add("selected");
+    }
+  });
+  // currentGermanLevelHTML.innerHTML = "ALV";
+  modal.style.visibility = "visible";
+  let { score, percentage } = check_answers(
+    right_answers,
+    Object.values(selectedOptions)
+  );
+
+  // Display the final message with the user's score and feedback
+  const { final_message, urlIcon } = get_final_message(
+    score,
+    currentGermanLevel
+  );
+  final_messageHTML.textContent = final_message;
+  scoreHTML.textContent = `${score}%`;
+  userNameHTML.textContent = formInfo.nameInput;
+  percentageHTML.textContent = percentage;
+  iconImgHTML.src = urlIcon;
+
+  modal.addEventListener("click", function (e) {
+    if (
+      e.target.innerHTML === "Close" ||
+      e.target.classList.contains("modal-parent")
+    ) {
+      modal.style.visibility = "hidden";
+    }
+  });
+};
 // functions
 
 // Function to start the countdown
@@ -65,6 +120,8 @@ function startCountdown(durationInSeconds) {
     if (remainingTime <= 0) {
       clearInterval(countdownInterval); // Stop the countdown when it reaches 0
       countdownElement.innerHTML = "Time's up!";
+      finish();
+      buttonNextHTML.textContent = "Try it again";
     } else if (quizIsSubmitted) {
       clearInterval(countdownInterval); // Stop the countdown when it reaches 0
       countdownElement.innerHTML = "Time left: 00:00";
@@ -132,7 +189,7 @@ function optionClickListener(e) {
     userSelectedOption.parentElement.classList.add("selected");
 
     // Log the updated selectedOptions object to the console
-    console.log(selectedOptions);
+    // console.log(selectedOptions);
   }
 }
 
@@ -220,18 +277,15 @@ const initializeGeneralVariables = function (formInfo) {
 function check_answers(right_answers, user_answers) {
   let right_answer_count = 0;
   let i = 0;
-  console.log(right_answers.length);
 
   // Loop through each question's right answer and user's answer
   while (i < right_answers.length) {
     // If the user's answer is among the right answers, increase the count
     if (right_answers.includes(user_answers[i])) {
       right_answer_count++;
-      console.log(right_answer_count);
     }
     i++;
   }
-  console.log(right_answer_count, right_answers);
 
   // Calculate the score and percentage of correct answers
   return {
@@ -288,61 +342,7 @@ updateQuestion.addEventListener("click", function (e) {
     window.location.href = "../index.html";
   }
   if (e.target.innerHTML === "Finish") {
-    buttonPreviousHTML.style.visibility = "hidden";
-    document.querySelector(".card-question").style.visibility = "hidden";
-    quizIsSubmitted = true;
-    const modal = document.querySelector(".modal-parent");
-    const final_messageHTML = modal.querySelector(".feedback-message");
-    const scoreHTML = modal.querySelector(".score");
-    const userNameHTML = modal.querySelector(".modal-user-name");
-    const percentageHTML = modal.querySelector(".percentage");
-    const iconImgHTML = modal.querySelector(".modal-icon-score-img");
-    const allOptions = document.querySelectorAll(
-      ".card-question-single-option-option"
-    );
-    const test11 = document.querySelector(
-      ".card-question-single-option-option"
-    );
-    test11.style.backgroundColor = "green";
-    [...allOptions].forEach((option) => {
-      console.log(
-        option,
-        option.innerHTML,
-        right_answers[currentQuestionIndex - 1]
-      );
-      if (option.innerHTML === right_answers[currentQuestionIndex - 1]) {
-        option.style.backgroundColor = "green";
-        option.innerHTML = "green";
-        option.classList.add("selected");
-        console.log("style", option.style.backgroundColor);
-      }
-    });
-    // currentGermanLevelHTML.innerHTML = "ALV";
-    modal.style.visibility = "visible";
-    let { score, percentage } = check_answers(
-      right_answers,
-      Object.values(selectedOptions)
-    );
-
-    // Display the final message with the user's score and feedback
-    const { final_message, urlIcon } = get_final_message(
-      score,
-      currentGermanLevel
-    );
-    final_messageHTML.textContent = final_message;
-    scoreHTML.textContent = `${score}%`;
-    userNameHTML.textContent = formInfo.nameInput;
-    percentageHTML.textContent = percentage;
-    iconImgHTML.src = urlIcon;
-
-    modal.addEventListener("click", function (e) {
-      if (
-        e.target.innerHTML === "Close" ||
-        e.target.classList.contains("modal-parent")
-      ) {
-        modal.style.visibility = "hidden";
-      }
-    });
+    finish();
   }
 
   // Check if the "Next" button was clicked and there are more questions
@@ -376,7 +376,6 @@ updateQuestion.addEventListener("click", function (e) {
 
   // Update the "Next" button label and make it "Finish" if at the last question
   if (currentQuestionIndex === totalQuestionNumber) {
-    console.log("quizIsSubmitted", quizIsSubmitted);
     buttonNextHTML.textContent = "Finish";
     if (quizIsSubmitted) {
       buttonNextHTML.textContent = "Try it again";
@@ -405,9 +404,6 @@ updateQuestion.addEventListener("click", function (e) {
 // Uncomment the following lines to retrieve formInfo from localStorage
 // let formInfo = JSON.parse(localStorage.getItem("formInfo"));
 // let currentLevelInfo = JSON.parse(localStorage.getItem("currentLevelInfo"));
-
-// Output formInfo to the console
-console.log("formInfo", formInfo);
 
 // Initialize variables and set HTML values
 initializeGeneralVariables(formInfo);

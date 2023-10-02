@@ -68,10 +68,8 @@ form.addEventListener("submit", function (e) {
     .then((data) => {
       // Encode the data as a URL component
       let encodedURL = encodeURIComponent(JSON.stringify(data));
-      console.log("data", encodedURL);
 
       // Output to console the encoded data and construct the URL for redirection
-      console.log("url", `../pages/quizForm.html?${encodedURL}`);
       window.location.href = `../pages/quizForm.html?${encodedURL}`;
     })
     .toString();
